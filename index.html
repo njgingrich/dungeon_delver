@@ -1,9 +1,30 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="src/"></script>
+        <style> 
+            body{ 
+                margin:0; 
+            } 
+
+            canvas { 
+                border: solid 1px black;
+                position: relative;
+                background: white;
+            }
+
+            .container {
+                display:block;
+                margin: 20px auto 0 auto;
+                width:800px;
+                height:600px;
+            }
+        </style>
     </head>
     <body>
-        <canvas id="canvas" tabindex="1"></canvas>
+        <div class="container">
+            <canvas id="canvas" tabindex="1"></canvas>
+        </div>
+
+        <script src="dist/bundle.js"></script>
     </body>
 </html>

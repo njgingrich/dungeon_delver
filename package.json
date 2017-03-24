@@ -12,10 +12,12 @@
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2 || ^4.0.0",
-    "eslint-plugin-react": "^6.9.0"
+    "eslint-plugin-react": "^6.9.0",
+    "webpack": "^2.3.1"
   },
   "scripts": {
-    "start": "babel-node src",
+    "start": "webpack --config config/webpack.config.js && babel-node dist/bundle.js",
+    "build": "webpack --config config/webpack.config.js",
     "test": "eslint src"
   }
 }
