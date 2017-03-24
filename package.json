@@ -1,0 +1,21 @@
+{
+  "name": "dungeon_delver",
+  "version": "1.0.0",
+  "description": "little roguelike game",
+  "author": "njgingrich",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-preset-env": "^1.2.2",
+    "babel-preset-es2015": "^6.24.0",
+    "eslint": "^3.15.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2 || ^4.0.0",
+    "eslint-plugin-react": "^6.9.0"
+  },
+  "scripts": {
+    "start": "babel-node src",
+  "test": "eslint src"
+  }
+}
