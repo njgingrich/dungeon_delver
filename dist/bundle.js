@@ -76,12 +76,22 @@
 
 class Game {
   constructor() {
-    this.player = new __WEBPACK_IMPORTED_MODULE_0__player__["a" /* default */]()
+    this.player = new __WEBPACK_IMPORTED_MODULE_0__player__["a" /* default */](395, 295)
     this.canvas = document.getElementById('canvas')
+    this.c = this.canvas.getContext('2d')
     this.WIDTH = 800
     this.HEIGHT = 600
     this.canvas.width = this.WIDTH
     this.canvas.height = this.HEIGHT
+
+    this.loop = this.loop.bind(this)
+    setInterval(this.loop, 20)
+  }
+
+  loop() {
+    this.c.clearRect(0, 0, this.WIDTH, this.HEIGHT)
+
+    this.player.drawPlayer(this.c)
   }
 
   run() {
@@ -111,12 +121,19 @@ game.run()
 
 "use strict";
 class Player {
-  constructor(name) {
-    this.name = name
+  constructor(x, y) {
+    this.x = x
+    this.y = y
   }
 
-  message() {
-    return `hey my names ${this.name}`
+  drawPlayer(c) {
+    c.fillStyle = 'red'
+    c.strokeStyle = 'blue'
+    c.beginPath()
+    c.rect(this.x, this.y, 10, 10)
+    c.lineWidth = 1
+    c.stroke()
+    c.fill()
   }
 }
 
