@@ -1,8 +1,17 @@
+// @flow
+
 import Player from './player'
 
 class Game {
+  player: Player
+  canvas: HTMLElement
+  c: CanvasRenderingContext2D
+  WIDTH: number
+  HEIGHT: number
+
   constructor() {
     this.player = new Player(395, 295)
+
     this.canvas = document.getElementById('canvas')
     this.c = this.canvas.getContext('2d')
     this.WIDTH = 800
@@ -21,7 +30,7 @@ class Game {
   }
 
   run() {
-
+    this.WIDTH = 800
   }
 }
 
