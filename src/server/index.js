@@ -11,7 +11,7 @@ const app = express()
 
 app.use(compression())
 app.use(STATIC_PATH, express.static('dist'))
-app.use(STATIC_PATH, express.static('public'))
+app.use(STATIC_PATH, express.static('static'))
 
 app.get('/', (req, res) => {
   res.send(renderApp(APP_NAME))
@@ -19,5 +19,6 @@ app.get('/', (req, res) => {
 
 app.listen(WEB_PORT, () => {
   // eslint-disable-next-line no-console
-  console.log(`Server running on port ${WEB_PORT} ${isProd ? '(production)' : '(development)'}.`)
+  console.log(`Server running on port ${WEB_PORT} ${isProd ? '(production)' :
+  '(development).\nKeep "yarn dev:wds" running in an other terminal'}.`)
 })
