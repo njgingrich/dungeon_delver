@@ -1,4 +1,4 @@
-import Player from './player'
+import Game from './game'
 
-const me = new Player('Doug')
-console.log(me.message())
+const game = new Game()
+game.run()

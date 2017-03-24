@@ -16,6 +16,6 @@
   },
   "scripts": {
     "start": "babel-node src",
-  "test": "eslint src"
+    "test": "eslint src"
   }
 }
