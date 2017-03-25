@@ -5,6 +5,8 @@ import Player from './player'
 import { APP_CONTAINER_SELECTOR } from '../shared/config'
 
 const Container = Pixi.Container
+const TextureCache = Pixi.utils.TextureCache
+const Rectangle = Pixi.Rectangle
 const autoDetectRenderer = Pixi.autoDetectRenderer
 const loader = Pixi.loader
 const resources = Pixi.loader.resources
@@ -41,11 +43,14 @@ class Game {
   }
 
   _setup() {
-    const sprite = new Sprite(
-      resources['static/spritesheet.png'].texture
-    )
-    console.log('stage: ', this.stage)
-    this.stage.addChild(sprite)
+    const spritesheet = TextureCache['static/spritesheet.png']
+    const warriorFrame = new Rectangle(736, 32, 32, 32)
+    spritesheet.frame = warriorFrame
+    const warrior = new Sprite(spritesheet)
+    warrior.x = 32
+    warrior.y = 32
+
+    this.stage.addChild(warrior)
     this.renderer.render(this.stage)
   }
 
