@@ -8,8 +8,9 @@ canvas {
   background: white;
 }
 
-.container {
+.js-app {
   display:block;
+  text-align: center;
   margin: 20px auto 0 auto;
   width:800px;
   height:600px;
