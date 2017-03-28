@@ -1,57 +1,31 @@
 // @flow
 
-import * as Pixi from 'pixi.js'
+import TileMap from './tile-map'
+import Tile from './tile'
 import Player from './player'
-import { APP_CONTAINER_SELECTOR } from '../shared/config'
-
-const Container = Pixi.Container
-const TextureCache = Pixi.utils.TextureCache
-const Rectangle = Pixi.Rectangle
-const autoDetectRenderer = Pixi.autoDetectRenderer
-const loader = Pixi.loader
-const resources = Pixi.loader.resources
-const Sprite = Pixi.Sprite
 
 class Game {
   player: Player
-  renderer: any
-  stage: any
-  WIDTH: number
-  HEIGHT: number
+  tiles: TileMap
 
   constructor() {
     this.player = new Player(395, 295)
-    this.WIDTH = 800
-    this.HEIGHT = 600
+    this.tiles = new TileMap(25, 20)
     this._bind()
-    this.renderer = autoDetectRenderer(800, 600)
-    // flow-disable-next-line
-    document.querySelector(APP_CONTAINER_SELECTOR).appendChild(this.renderer.view)
-
-    this.stage = new Container()
-    this._preload()
+    this._setup()
   }
 
   _bind() {
     (this: any)._setup = this._setup.bind(this)
   }
 
-  _preload() {
-    loader
-      .add('static/spritesheet.png')
-      .load(this._setup)
-  }
-
   _setup() {
-    const spritesheet = TextureCache['static/spritesheet.png']
-    const warriorFrame = new Rectangle(736, 32, 32, 32)
-    spritesheet.frame = warriorFrame
-    const warrior = new Sprite(spritesheet)
-    warrior.x = 32
-    warrior.y = 32
-
-    this.stage.addChild(warrior)
-    this.renderer.render(this.stage)
+    this.tiles.init()
+    const heroTile = new Tile('hero.png')
+    this.tiles.put(1, 1, heroTile)
+    // const hero = new Sprite(this.res.textures['hero.png'])
+    // hero.x = 32
+    // hero.y = 32
   }
 
   /*

@@ -9,4 +9,4 @@ app.innerHTML = `
 <h1>${APP_NAME}</h1>
 `
 
-const game = new Game()
+const game = new Game() // eslint-disable-line no-unused-vars
