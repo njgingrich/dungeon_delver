@@ -1,11 +1,10 @@
 import * as Pixi from 'pixi.js'
 
+import Point from './point'
 import Tile from './tile'
-import { APP_CONTAINER_SELECTOR } from '../shared/config'
 
 const SPRITESHEET_JSON = 'static/spritesheet.json'
 const Container = Pixi.Container
-const autoDetectRenderer = Pixi.autoDetectRenderer
 const loader = Pixi.loader
 const Sprite = Pixi.Sprite
 
@@ -13,20 +12,19 @@ class TileMap {
   tiles: Tile[][]
   WIDTH: number
   HEIGHT: number
+  TILE_SIZE: number
   tex: any
-  renderer: any
   stage: any
 
-  constructor(width: number, height: number) {
+  constructor(width: number, height: number, tileSize: number) {
     this.WIDTH = width
     this.HEIGHT = height
+    this.TILE_SIZE = tileSize
     this.tiles = this._createTiles()
 
-    this.renderer = autoDetectRenderer(this.WIDTH * 32, this.HEIGHT * 32)
-    // flow-disable-next-line
-    document.querySelector(APP_CONTAINER_SELECTOR).appendChild(this.renderer.view)
-
     this.stage = new Container()
+    this.stage.width = this.WIDTH
+    this.stage.height = this.HEIGHT
     this._bind()
   }
 
@@ -57,10 +55,10 @@ class TileMap {
 
     for (let row = 0; row < this.HEIGHT; row++) {
       for (let col = 0; col < this.WIDTH; col++) {
-        this.put(col, row, new Tile('ground_1.png'))
+        this.put(new Tile('ground_1.png', new Point(col, row)))
       }
     }
-    this.put(0, 0, new Tile('king.png'))
+    this.put(new Tile('king.png', new Point(0, 0)))
     return true
   }
 
@@ -68,23 +66,15 @@ class TileMap {
     return this.tiles[y][x] // [row][col]
   }
 
-  put(x: number, y: number, val: Tile) {
-    this.tiles[y][x] = val
-    const sprite = new Sprite(this.tex[val.sprite])
-    sprite.x = x * 32
-    sprite.y = y * 32
-    this.stage.addChild(sprite)
-    this.renderer.render(this.stage)
-  }
+  put(val: Tile) {
+    const x = val.point.x
+    const y = val.point.y
 
-  /**
-   * Get a coordinate from a set of pixels.
-   * @param {number} x The x-coord in pixels.
-   * @param {number} y The y-coord in pixels.
-   * @return {coord} A coordinate representing a Tile (32x32 pixels)
-   */
-  static from(x: number, y: number): Object {
-    return { x: x / 32, y: y / 32 }
+    this.tiles[y][x] = val
+    const sprite = new Sprite(this.tex[val.name])
+    sprite.x = x * this.TILE_SIZE
+    sprite.y = y * this.TILE_SIZE
+    this.stage.addChild(sprite)
   }
 }
 

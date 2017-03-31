@@ -1,29 +1,48 @@
 // @flow
 
-import TileMap from './tile-map'
-import Tile from './tile'
+import * as Pixi from 'pixi.js'
+
 import Player from './player'
+import Point from './point'
+import Tile from './tile'
+import TileMap from './tile-map'
+import { APP_CONTAINER_SELECTOR } from '../shared/config'
 
 class Game {
   player: Player
   tiles: TileMap
   res: any
+  renderer: any
 
   constructor() {
+    this.tiles = new TileMap(25, 20, 32)
+    this.renderer = Pixi.autoDetectRenderer(this.tiles.WIDTH * this.tiles.TILE_SIZE,
+                                            this.tiles.HEIGHT * this.tiles.TILE_SIZE)
+
+    // flow-disable-next-line
+    document.querySelector(APP_CONTAINER_SELECTOR).appendChild(this.renderer.view)
+
     this.player = new Player('hero.png')
-    this.tiles = new TileMap(25, 20)
     this._bind()
     this._setup()
+    this.animate()
   }
 
   _bind() {
-    (this: any)._setup = this._setup.bind(this)
+    (this: any)._setup = this._setup.bind(this);
+    (this: any).animate = this.animate.bind(this)
   }
 
   async _setup() {
     await this.tiles.init(() => {
-      this.tiles.put(1, 1, new Tile(this.player.name))
+      const t = new Tile(this.player.name, new Point(1, 1))
+      this.tiles.put(t)
     })
+  }
+
+  animate() {
+    requestAnimationFrame(this.animate)
+    this.renderer.render(this.tiles.stage)
   }
 
   /*

@@ -1,8 +1,14 @@
-class Tile {
-  sprite: string
+// @flow
 
-  constructor(tex: string) {
-    this.sprite = tex
+import Point from './point'
+
+class Tile {
+  name: string
+  point: Point
+
+  constructor(name: string, point: Point) {
+    this.name = name
+    this.point = point
   }
 }
 
