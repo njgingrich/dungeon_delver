@@ -1,17 +1,10 @@
-class Player {
-  constructor(x, y) {
-    this.x = x
-    this.y = y
-  }
+// @flow
 
-  drawPlayer(c) {
-    c.fillStyle = 'red'
-    c.strokeStyle = 'blue'
-    c.beginPath()
-    c.rect(this.x, this.y, 10, 10)
-    c.lineWidth = 1
-    c.stroke()
-    c.fill()
+class Player {
+  name: string
+
+  constructor(name: string) {
+    this.name = name
   }
 }
 

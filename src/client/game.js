@@ -7,9 +7,10 @@ import Player from './player'
 class Game {
   player: Player
   tiles: TileMap
+  res: any
 
   constructor() {
-    this.player = new Player(395, 295)
+    this.player = new Player('hero.png')
     this.tiles = new TileMap(25, 20)
     this._bind()
     this._setup()
@@ -19,13 +20,10 @@ class Game {
     (this: any)._setup = this._setup.bind(this)
   }
 
-  _setup() {
-    this.tiles.init()
-    const heroTile = new Tile('hero.png')
-    this.tiles.put(1, 1, heroTile)
-    // const hero = new Sprite(this.res.textures['hero.png'])
-    // hero.x = 32
-    // hero.y = 32
+  async _setup() {
+    await this.tiles.init(() => {
+      this.tiles.put(1, 1, new Tile(this.player.name))
+    })
   }
 
   /*

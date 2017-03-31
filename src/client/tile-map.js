@@ -13,7 +13,7 @@ class TileMap {
   tiles: Tile[][]
   WIDTH: number
   HEIGHT: number
-  res: Resource
+  tex: any
   renderer: any
   stage: any
 
@@ -43,15 +43,25 @@ class TileMap {
     return arr
   }
 
-  init() {
+  async init(callback: Function): res {
     loader
       .add(SPRITESHEET_JSON)
-      .load(this._setup)
-    this.res = Pixi.loader.resources[SPRITESHEET_JSON]
+      .load(() => {
+        this._setup()
+        callback()
+      })
   }
 
   _setup() {
+    this.tex = Pixi.loader.resources[SPRITESHEET_JSON].textures
+
+    for (let row = 0; row < this.HEIGHT; row++) {
+      for (let col = 0; col < this.WIDTH; col++) {
+        this.put(col, row, new Tile('ground_1.png'))
+      }
+    }
     this.put(0, 0, new Tile('king.png'))
+    return true
   }
 
   at(x: number, y: number) {
@@ -60,9 +70,9 @@ class TileMap {
 
   put(x: number, y: number, val: Tile) {
     this.tiles[y][x] = val
-    console.log('putting sprite', val.sprite, 'at', x, y)
-
-    const sprite = new Sprite(this.res.textures[val.sprite])
+    const sprite = new Sprite(this.tex[val.sprite])
+    sprite.x = x * 32
+    sprite.y = y * 32
     this.stage.addChild(sprite)
     this.renderer.render(this.stage)
   }
