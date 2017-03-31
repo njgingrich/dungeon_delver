@@ -9,23 +9,24 @@ import TileMap from './tile-map'
 import { APP_CONTAINER_SELECTOR } from '../shared/config'
 
 class Game {
+  HUD_WIDTH: number
   player: Player
   tiles: TileMap
   res: any
   renderer: any
 
   constructor() {
+    this.HUD_WIDTH = 120
     this.tiles = new TileMap(25, 20, 32)
     this.renderer = Pixi.autoDetectRenderer(this.tiles.WIDTH * this.tiles.TILE_SIZE,
                                             this.tiles.HEIGHT * this.tiles.TILE_SIZE)
 
     // flow-disable-next-line
     document.querySelector(APP_CONTAINER_SELECTOR).appendChild(this.renderer.view)
-
-    this.player = new Player('hero.png')
     this._bind()
-    this._setup()
-    this.animate()
+    this._setup(() => {
+      this.animate()
+    })
   }
 
   _bind() {
@@ -33,10 +34,16 @@ class Game {
     (this: any).animate = this.animate.bind(this)
   }
 
-  async _setup() {
+  _getWidth(): number {
+    return (this.tiles.WIDTH * this.tiles.TILE_SIZE) + this.HUD_WIDTH
+  }
+
+  async _setup(callback: Function) {
     await this.tiles.init(() => {
-      const t = new Tile(this.player.name, new Point(1, 1))
-      this.tiles.put(t)
+      this.player = new Player('Hero',
+                             new Pixi.Sprite(this.tiles.tex['hero.png']))
+      this.tiles.put(1, 1, this.player.sprite)
+      callback()
     })
   }
 
