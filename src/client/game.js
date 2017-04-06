@@ -2,6 +2,8 @@
 
 import * as Pixi from 'pixi.js'
 
+import Key from './key/key'
+import KeyboardManager from './key/keyboard-manager'
 import Player from './player'
 import Point from './tile/point'
 import Tile from './tile/tile'
@@ -17,6 +19,15 @@ class Game {
   renderer: any
 
   constructor() {
+    if (!Pixi.keyboard) {
+      const keyboard = {
+        KeyboardManager,
+        Key
+      }
+      const keyboardManager = new KeyboardManager()
+      Pixi.keyboard = keyboard
+      Pixi.keyboardManager = keyboardManager
+    }
     this.tiles = new TileMap(25, 20, 32)
     this.HUD_WIDTH = 120
     this.HUD_HEIGHT = this.tiles.HEIGHT * this.tiles.TILE_SIZE
@@ -57,10 +68,14 @@ class Game {
     requestAnimationFrame(this.loop)
     this.updateState()
     this.renderer.render(this.tiles.stage)
+    Pixi.keyboardManager.update()
   }
 
   updateState() {
     this.tiles.drawMap()
+    Pixi.keyboardManager.on('down', (key) => {
+      console.log('down pressed', key)
+    })
   }
 
   /*

@@ -12,6 +12,10 @@ class Player {
     this.name = name
     this.sprite = sprite
   }
+
+  moveLeft(delta: number) {
+    this.x -= delta
+  }
 }
 
 export default Player
