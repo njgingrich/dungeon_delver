@@ -14,6 +14,7 @@ class TileMap {
   WIDTH: number
   HEIGHT: number
   TILE_SIZE: number
+  TILE_LAYER: TileLayer
   tex: any
   stage: any
 
@@ -23,6 +24,11 @@ class TileMap {
     this.TILE_SIZE = tileSize
     this.layers = []
     this.layers.push(new TileLayer(this))
+    this.layers.push(new TileLayer(this))
+    this.layers.push(new TileLayer(this))
+    this.TILE_LAYER = this.layers[0]
+    this.MID_LAYER = this.layers[1]
+    this.TOP_LAYER = this.layers[2]
 
     this.stage = new Container()
     this.stage.width = this.WIDTH
@@ -45,38 +51,39 @@ class TileMap {
 
   _setup() {
     this.tex = Pixi.loader.resources[SPRITESHEET_JSON].textures
-
+    // set the entire map to fill with ground squares on tile layer
     for (let row = 0; row < this.HEIGHT; row++) {
       for (let col = 0; col < this.WIDTH; col++) {
-        this.putTile(new Tile('ground_1.png', new Point(col, row)))
-        // this.put(col, row, new Sprite(this.tex['ground_1.png']))
+        const p = new Point(col, row)
+        this.TILE_LAYER.put(new Tile('ground',
+                                     new Sprite(this.tex['ground_1.png'])),
+                            p)
       }
     }
-    this.putTile(new Tile('ghast.png', new Point(10, 4)))
-    // this.put(10, 4, new Sprite(this.tex['ghast.png']))
+    this.MID_LAYER.put(new Tile('Ghast',
+                       new Sprite(this.tex['ghast.png'])),
+                       new Point(10, 4))
     return true
   }
 
-  at(x: number, y: number) {
-    return this.tiles[y][x] // [row][col]
+  drawMap() {
+    for (let row = 0; row < this.HEIGHT; row++) {
+      for (let col = 0; col < this.WIDTH; col++) {
+        this.draw(new Point(col, row))
+      }
+    }
   }
 
-  putTile(val: Tile) {
-    const x = val.point.x
-    const y = val.point.y
-
-    const TILES = this.layers[0]
-    TILES[y][x] = val
-    const sprite = new Sprite(this.tex[val.name])
-    sprite.x = x * this.TILE_SIZE
-    sprite.y = y * this.TILE_SIZE
-    this.stage.addChild(sprite)
-  }
-
-  put(x: number, y: number, s: Sprite) {
-    s.x = x * this.TILE_SIZE
-    s.y = y * this.TILE_SIZE
-    this.stage.addChild(s)
+  draw(pt: Point) {
+    this.layers.forEach((layer) => {
+      const t = layer.at(pt)
+      if (t !== undefined) {
+        // const sprite = new Sprite(this.tex[t.spriteName])
+        t.sprite.x = pt.x * this.TILE_SIZE
+        t.sprite.y = pt.y * this.TILE_SIZE
+        this.stage.addChild(t.sprite)
+      }
+    })
   }
 }
 

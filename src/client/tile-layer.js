@@ -1,5 +1,6 @@
 // @flow
 
+import Point from './point'
 import Tile from './tile'
 import TileMap from './tile-map'
 
@@ -23,6 +24,14 @@ class TileLayer {
     }
 
     return arr
+  }
+
+  at(pt: Point): Tile {
+    return this.tiles[pt.y][pt.x]
+  }
+
+  put(tile: Tile, pt: Point) {
+    this.tiles[pt.y][pt.x] = tile
   }
 }
 

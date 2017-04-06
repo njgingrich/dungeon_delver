@@ -24,9 +24,7 @@ class Game {
     // flow-disable-next-line
     document.querySelector(APP_CONTAINER_SELECTOR).appendChild(this.renderer.view)
     this._bind()
-    this._setup(() => {
-      this.animate()
-    })
+    this._setup(this.animate)
   }
 
   _bind() {
@@ -42,13 +40,17 @@ class Game {
     await this.tiles.init(() => {
       this.player = new Player('Hero',
                              new Pixi.Sprite(this.tiles.tex['hero.png']))
-      this.tiles.put(1, 1, this.player.sprite)
+      const playerTile = new Tile('Hero',
+                                  new Pixi.Sprite(this.tiles.tex['hero.png']))
+      console.log('adding player to mid layer')
+      this.tiles.MID_LAYER.put(playerTile, new Point(1, 1))
       callback()
     })
   }
 
   animate() {
     requestAnimationFrame(this.animate)
+    this.tiles.drawMap()
     this.renderer.render(this.tiles.stage)
   }
 
