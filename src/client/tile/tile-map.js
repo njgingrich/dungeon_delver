@@ -61,7 +61,7 @@ class TileMap {
       }
     }
     this.MID_LAYER.put(new Tile('Ghast',
-                       new Sprite(this.tex['ghast.png'])),
+                                new Sprite(this.tex['ghast.png'])),
                        new Point(10, 4))
     return true
   }
@@ -78,7 +78,6 @@ class TileMap {
     this.layers.forEach((layer) => {
       const t = layer.at(pt)
       if (t !== undefined) {
-        // const sprite = new Sprite(this.tex[t.spriteName])
         t.sprite.x = pt.x * this.TILE_SIZE
         t.sprite.y = pt.y * this.TILE_SIZE
         this.stage.addChild(t.sprite)
